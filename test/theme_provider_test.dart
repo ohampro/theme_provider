@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:theme_provider/theme_provider.dart';
 import 'package:theme_provider/theme_service.dart';
+import 'package:theme_provider/themes.dart';
 
 void main() {
   group('ThemeService', (){
@@ -24,4 +25,26 @@ void main() {
     });
   });
 
+  group('ThemeProvider', (){
+
+    testWidgets('Widget Should be intuitive and easy to use', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(
+        ThemeProvider<ThemeData>(
+          themes: const DefaultMaterialAppThemes(), 
+          builder: (context, theme, darkTheme){
+            return MaterialApp(
+              title: 'Material Test',
+              theme: theme,
+              darkTheme: darkTheme,
+              home: Scaffold(
+                body: Text(Theme.of(context).brightness.toString()),
+              ),
+            );
+          },
+      ));
+
+      expect(find.text(Brightness.light.toString()), findsOneWidget);
+    });
+  });
 }
