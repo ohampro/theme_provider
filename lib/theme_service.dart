@@ -28,4 +28,17 @@ mixin ThemeService {
     }
   }
   
+  void light() => mode = ThemeMode.light;
+  void dark() => mode = ThemeMode.dark;
+  void system() => mode = ThemeMode.system;
+
+  void next() {
+    final nextIndex = (_mode.index + 1) % ThemeMode.values.length;
+    mode = ThemeMode.values[nextIndex];
+  }
+
+  void previous() {
+    final previousIndex = (_mode.index - 1) % ThemeMode.values.length;
+    mode = ThemeMode.values[previousIndex];
+  }
 }

@@ -54,6 +54,46 @@ void main() {
       // Assert
       expect(find.text(Brightness.light.toString()), findsOneWidget);
     });
+
+    testWidgets('next mode should show light, then dark, then system, then light again', (WidgetTester tester) async {
+      // Arrange
+      await tester.pumpWidget(const MyApp());
+
+      // Act 1
+      // system to light
+      await tester.tap(find.byKey(nextModeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(Brightness.light.toString()), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+
+      // Act 2
+      // light to dark
+      await tester.tap(find.byKey(nextModeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(Brightness.dark.toString()), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.dark.toString()}'), findsOneWidget);
+
+      // Act 3
+      // dark to system
+      await tester.tap(find.byKey(nextModeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('Mode: ${ThemeMode.system.toString()}'), findsOneWidget);
+
+      // Act 4
+      // system to light again
+      await tester.tap(find.byKey(nextModeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(Brightness.light.toString()), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+    });
   });
 }
 
@@ -86,6 +126,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 const changeThemeButtonKey = ValueKey('changeThemeButtonKey');
+const nextModeButtonKey = ValueKey('nextModeButtonKey');
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
@@ -93,12 +134,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Column(
         children: [
-          Text(Theme.of(context).brightness.toString()),
           ElevatedButton(
             key: changeThemeButtonKey, 
             onPressed: ThemeProvider.of(context).toggle, 
             child: const Text('Change Theme'),
-          )
+          ),
+          Text(Theme.of(context).brightness.toString()),
+
+          ElevatedButton(
+            key: nextModeButtonKey, 
+            onPressed: ThemeProvider.of(context).next, 
+            child: const Text('Next Mode'),
+          ),
+          Text('Mode: ${ThemeProvider.of(context).mode.toString()}'),
         ],
       ),
     );

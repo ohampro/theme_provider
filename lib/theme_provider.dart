@@ -23,6 +23,7 @@ class ThemeProvider<T> extends StatefulWidget{
   State<StatefulWidget> createState() => _ThemeProviderState<T>();
 
   static ThemeService of(BuildContext context){
+    InheritedThemeProvider.of(context); // propagate build to widget tree
     return context.findAncestorStateOfType<State<ThemeProvider>>()! as ThemeService;
   }
 }
