@@ -3,6 +3,7 @@ library theme_provider;
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:theme_provider/inherited_theme_provider.dart';
 import 'package:theme_provider/theme_service.dart';
 import 'package:theme_provider/themes.dart';
 
@@ -40,7 +41,12 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService, 
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(_theme, _darkTheme);
+    final app = widget.builder(_theme, _darkTheme);
+
+    return InheritedThemeProvider(
+      mode = mode,
+      child: app,
+    );
   }
 
   T get _theme {
