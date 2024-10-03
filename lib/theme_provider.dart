@@ -26,7 +26,7 @@ class ThemeProvider<T> extends StatefulWidget{
   }
 }
 
-class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService{
+class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService, WidgetsBindingObserver{
 
   T get _lightTheme => widget.themes.light();
   T get _darkTheme => widget.themes.dark();
@@ -35,6 +35,7 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService{
   void initState() {
     changeNotifier.addListener(_updateState);
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -54,10 +55,19 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService{
   void dispose() {
     changeNotifier.removeListener(_updateState);
     changeNotifier.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
   
   void _updateState() {
     if (mounted) setState(() {});
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    if (isSystem) {
+      _updateState();
+    }
   }
 }
