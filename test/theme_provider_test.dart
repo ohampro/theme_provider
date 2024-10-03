@@ -34,17 +34,25 @@ void main() {
       expect(find.text(Brightness.light.toString()), findsOneWidget);
     });
 
-    testWidgets('Toggle mode should show dark mode', (WidgetTester tester) async {
+    testWidgets('Toggle mode should show dark mode and vise versa', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(const MyApp());
 
-      // Act
+      // Act 1
       // toogle to dark
       await tester.tap(find.byKey(changeThemeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.text(Brightness.dark.toString()), findsOneWidget);
+
+      // Act 2
+      // toogle to light
+      await tester.tap(find.byKey(changeThemeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text(Brightness.light.toString()), findsOneWidget);
     });
   });
 }
