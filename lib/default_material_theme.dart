@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:theme_provider/app_theme.dart';
+import 'package:x_theme_provider/app_theme.dart';
 
 class DefaultAppTheme extends AppTheme<ThemeData>{
   const DefaultAppTheme();

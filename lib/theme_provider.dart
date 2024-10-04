@@ -1,11 +1,11 @@
-library theme_provider;
+library x_theme_provider;
 
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:theme_provider/inherited_theme_provider.dart';
-import 'package:theme_provider/theme_service.dart';
-import 'package:theme_provider/app_theme.dart';
+import 'package:x_theme_provider/inherited_theme_provider.dart';
+import 'package:x_theme_provider/theme_service.dart';
+import 'package:x_theme_provider/app_theme.dart';
 
 typedef ThemeProviderBuilder<T> = Widget Function(T theme, T darkTheme);
 
