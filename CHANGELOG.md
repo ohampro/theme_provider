@@ -1,3 +1,6 @@
+## 0.0.2
+- Simplify import package in pub.dev
+
 ## 0.0.1
 
 - Added theme modes: light, dark, and system.
