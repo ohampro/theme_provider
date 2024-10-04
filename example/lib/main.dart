@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
-import 'package:theme_provider/themes.dart';
+import 'package:x_theme_provider/default_material_theme.dart';
+import 'package:x_theme_provider/theme_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider<ThemeData>(
-      themes: const DefaultMaterialAppThemes(),
+      theme: const DefaultAppTheme(),
       builder: (theme, darkTheme){
           return MaterialApp(
           title: 'Flutter Demo',
