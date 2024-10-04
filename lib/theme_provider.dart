@@ -5,6 +5,7 @@ import 'package:x_theme_provider/inherited_theme_provider.dart';
 import 'package:x_theme_provider/theme_service.dart';
 
 export 'package:x_theme_provider/default_material_theme.dart';
+export 'package:x_theme_provider/default_cupertino_theme.dart';
 
 typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
 
