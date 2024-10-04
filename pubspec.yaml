@@ -1,4 +1,4 @@
-name: theme_provider
+name: cross_theme_provider
 description: "Flutter App Theme Provider Package."
 version: 0.0.1
 homepage: https://github.com/ohampro/theme_provider
@@ -53,3 +53,18 @@ flutter:
   #
   # For details regarding fonts in packages, see
   # https://flutter.dev/to/font-from-package
+
+topics:
+  - flutter
+  - UI
+
+keywords:
+  - theme
+  - theming
+  - dynamic-theme
+  - theme-provider
+  - theme-switcher
+  - UI
+  - reusable
+  - widget
+  - design
