@@ -147,7 +147,7 @@ ThemeProvider.of(context).mode;
 
 Show some love, support by starring the repository, or you can
 
-<a href="https://buymeacoffee.com/ohampro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+<a href="https://buymeacoffee.com/ohampro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 217px !important;" ></a>
 
 
 ## Future
