@@ -211,11 +211,9 @@ packages:
   x_theme_provider:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: de3472cfdc6fd096c86d6ab39695202f0d76e471
-      url: "https://github.com/ohampro/theme_provider.git"
-    source: git
+      path: ".."
+      relative: true
+    source: path
     version: "0.0.1"
 sdks:
   dart: ">=3.5.3 <4.0.0"

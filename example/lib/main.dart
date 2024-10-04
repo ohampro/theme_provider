@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:x_theme_provider/default_material_theme.dart';
 import 'package:x_theme_provider/theme_provider.dart';
 
 void main() {
@@ -11,13 +10,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider<ThemeData>(
-      theme: const DefaultAppTheme(),
-      builder: (theme, darkTheme){
+    return ThemeProvider(
+      builder: (mode){
           return MaterialApp(
           title: 'Flutter Demo',
-          theme: theme,
-          darkTheme: darkTheme,
+          theme: DefaultMaterialTheme.of(mode),
+          darkTheme: DefaultMaterialTheme.dark,
           home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );
       },
@@ -47,17 +45,50 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('A text Widget for presenting the theme'),
+            Wrap(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).light, 
+                  icon: const Icon(Icons.light_mode),
+                  label: const Text('light'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).dark, 
+                  icon: const Icon(Icons.dark_mode),
+                  label: const Text('dark'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).system, 
+                  icon: const Icon(Icons.settings), 
+                  label: const Text('system'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).toggle, 
+                  icon: Icon(ThemeProvider.of(context).isDark ? Icons.toggle_off : Icons.toggle_on), 
+                  label: const Text('toggle'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).previous, 
+                  icon: const Icon(Icons.skip_previous), 
+                  label: const Text('previous'),
+                ),
+                ElevatedButton.icon(
+                  onPressed: ThemeProvider.of(context).next, 
+                  icon: const Icon(Icons.skip_next), 
+                  label: const Text('next'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 50,),
             Text('${ThemeProvider.of(context).mode} Mode'),
-            ElevatedButton(onPressed: (){}, child: const Text('Elevated Button'))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: ThemeProvider.of(context).toggle,
         tooltip: 'toggle',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: const Icon(Icons.contrast),
+      ),
     );
   }
 }
