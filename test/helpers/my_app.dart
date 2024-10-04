@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/theme_provider.dart';
-import 'package:x_theme_provider/theme_service.dart';
+import 'package:x_theme_provider/src/theme_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

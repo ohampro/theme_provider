@@ -1,11 +1,11 @@
 library x_theme_provider;
 
 import 'package:flutter/material.dart';
-import 'package:x_theme_provider/inherited_theme_provider.dart';
-import 'package:x_theme_provider/theme_service.dart';
+import 'package:x_theme_provider/src/inherited_theme_provider.dart';
+import 'package:x_theme_provider/src/theme_service.dart';
 
-export 'package:x_theme_provider/default_material_theme.dart';
-export 'package:x_theme_provider/default_cupertino_theme.dart';
+export 'package:x_theme_provider/src/default_material_theme.dart';
+export 'package:x_theme_provider/src/default_cupertino_theme.dart';
 
 typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
 
