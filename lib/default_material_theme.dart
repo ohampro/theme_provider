@@ -2,18 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/app_theme.dart';
 
-class DefaultAppTheme extends AppTheme<ThemeData>{
-  const DefaultAppTheme();
 
-  @override
-  ThemeData light() => DefaultMaterialTheme.light;
-
-  @override
-  ThemeData dark() => DefaultMaterialTheme.dark;
-  
-}
-
-class DefaultMaterialTheme{
+class DefaultMaterialTheme {
 
   static final ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -28,4 +18,6 @@ class DefaultMaterialTheme{
     useMaterial3: true,
 
   );
+
+  static ThemeData of(ThemeMode mode) => AppTheme.of(mode, light, dark);
 }

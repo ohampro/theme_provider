@@ -1,26 +1,23 @@
 library x_theme_provider;
 
-import 'dart:ui';
-
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:x_theme_provider/inherited_theme_provider.dart';
 import 'package:x_theme_provider/theme_service.dart';
-import 'package:x_theme_provider/app_theme.dart';
 
-typedef ThemeProviderBuilder<T> = Widget Function(T theme, T darkTheme);
+export 'package:x_theme_provider/default_material_theme.dart';
 
-class ThemeProvider<T> extends StatefulWidget{
-  final AppTheme<T> theme;
-  final ThemeProviderBuilder<T> builder;
+typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
+
+class ThemeProvider extends StatefulWidget{
+  final ThemeProviderBuilder builder;
 
   const ThemeProvider({
     super.key, 
-    required this.theme,
     required this.builder,
   });
 
   @override
-  State<StatefulWidget> createState() => _ThemeProviderState<T>();
+  State<StatefulWidget> createState() => _ThemeProviderState();
 
   static ThemeService of(BuildContext context){
     InheritedThemeProvider.of(context); // propagate build to widget tree
@@ -28,10 +25,7 @@ class ThemeProvider<T> extends StatefulWidget{
   }
 }
 
-class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService, WidgetsBindingObserver{
-
-  T get _lightTheme => widget.theme.light();
-  T get _darkTheme => widget.theme.dark();
+class _ThemeProviderState extends State<ThemeProvider> with ThemeService, WidgetsBindingObserver{
 
   @override
   void initState() {
@@ -42,20 +36,12 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService, 
 
   @override
   Widget build(BuildContext context) {
-    final app = widget.builder(_theme, _darkTheme);
+    final app = widget.builder(mode);
 
     return InheritedThemeProvider(
       mode = mode,
       child: app,
     );
-  }
-
-  T get _theme {
-    if (isSystem) {
-      final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
-      return brightness == Brightness.light ? _lightTheme : _darkTheme;
-    }
-    return isLight ? _lightTheme : _darkTheme;
   }
 
   @override
