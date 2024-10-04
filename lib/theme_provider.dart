@@ -5,17 +5,17 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:theme_provider/inherited_theme_provider.dart';
 import 'package:theme_provider/theme_service.dart';
-import 'package:theme_provider/themes.dart';
+import 'package:theme_provider/app_theme.dart';
 
 typedef ThemeProviderBuilder<T> = Widget Function(T theme, T darkTheme);
 
 class ThemeProvider<T> extends StatefulWidget{
-  final AppThemes<T> themes;
+  final AppTheme<T> theme;
   final ThemeProviderBuilder<T> builder;
 
   const ThemeProvider({
     super.key, 
-    required this.themes,
+    required this.theme,
     required this.builder,
   });
 
@@ -30,8 +30,8 @@ class ThemeProvider<T> extends StatefulWidget{
 
 class _ThemeProviderState<T> extends State<ThemeProvider<T>> with ThemeService, WidgetsBindingObserver{
 
-  T get _lightTheme => widget.themes.light();
-  T get _darkTheme => widget.themes.dark();
+  T get _lightTheme => widget.theme.light();
+  T get _darkTheme => widget.theme.dark();
 
   @override
   void initState() {

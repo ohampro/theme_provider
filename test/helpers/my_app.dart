@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:theme_provider/default_material_theme.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:theme_provider/theme_service.dart';
-import 'package:theme_provider/themes.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider<ThemeData>(
-      themes: const DefaultMaterialAppThemes(),
+      theme: const DefaultAppTheme(),
       builder: (theme, darkTheme){
         return MaterialApp(
           title: 'Material Test',
