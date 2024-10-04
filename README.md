@@ -10,30 +10,145 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/to/develop-packages).
 -->
+<!-- ![cross_theme_provider](https://raw.githubusercontent.com/ohampro/theme_provider/main/banner.png) -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+# Intuitive Theme Provider
 
-## Features
+Support for **light** and **dark** theme in your Flutter app and define your custom themes.
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Demo: [Theme Provider](https://ohampro.github.io/theme_provider/).
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Wrap your `XApp` with `ThemeProvider`:
 
 ```dart
-const like = 'sample';
+import 'package:theme_provider/theme_provider.dart';
+
+class YourApp extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return ThemeProvider(
+      builder: (mode) => MaterialApp(
+        title: 'Demo App',
+        theme: DefaultMaterialTheme.of(mode),
+        darkTheme: DefaultMaterialTheme.dark,
+        home: YourHomePage(),
+      ),
+    );
+  }
+}
 ```
 
-## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+
+## Changing Theme Mode
+
+```dart
+ThemeProvider.of(context).dark();
+
+ThemeProvider.of(context).light();
+
+ThemeProvider.of(context).system();
+
+ThemeProvider.of(context).toggle();
+
+ThemeProvider.of(context).next();
+
+ThemeProvider.of(context).previous();
+
+ThemeProvider.of(context).mode = ThemeData.dark;
+```
+
+
+
+## Create Your Themes
+
+```dart
+class YourMaterialTheme {
+
+    final static ThemeData light = ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.purple,
+    );
+
+    final static ThemeData dark = ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.purple,
+    );
+
+    // MAKE SURE TO ADD THIS
+    static ThemeData of(ThemeMode mode) => AppTheme.of(mode, light, dark);
+}
+```
+
+
+
+## CupertinoTheme?
+
+Just use `DefaultCupertinoTheme` or define yours.
+
+```dart
+import 'package:theme_provider/theme_provider.dart';
+
+class YourApp extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return ThemeProvider(
+      builder: (mode) => CupertinoApp(
+        title: 'Demo App',
+        theme: DefaultCupertinoTheme.of(mode),
+        home: YourHomePage(),
+      ),
+    );
+  }
+}
+```
+
+
+
+## Listen to the mode changes
+
+```dart
+ThemeProvider.of(context).changeNotifier.addListener(() {
+  // do your thing, or
+  // persist mode like pref.setX(key, ThemeProvider.of(context).mode)
+});
+```
+
+Or react on UI:
+
+```dart
+ValueListenableBuilder(
+  valueListenable: ThemeProvider.of(context).changeNotifier,
+  builder: (_, mode, child) {
+    // update your UI
+  },
+);
+```
+
+
+
+## More?
+
+```Dart
+// get current theme?
+Theme.of(context);
+
+// get current mode?
+ThemeProvider.of(context).mode;
+```
+
+## Liked Cross Theme Provider?
+
+Show some love, support by starring the repository, or you can
+
+<a href="https://buymeacoffee.com/ohampro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-blue.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+
+
+## Future
+- Persists selected mode.
