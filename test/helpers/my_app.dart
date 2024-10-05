@@ -8,11 +8,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ThemeProvider(
-      builder: (mode){
+      themes: DefaultMaterialTheme(),
+      builder: (theme){
         return MaterialApp(
           title: 'Material Test',
-          theme: DefaultMaterialTheme.of(mode),
+          theme: theme,
           darkTheme: DefaultMaterialTheme.dark,
           home: const MyHomePage(),
         );
@@ -28,8 +30,9 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-const changeThemeButtonKey = ValueKey('changeThemeButtonKey');
+const toggleThemeButtonKey = ValueKey('changeThemeButtonKey');
 const nextModeButtonKey = ValueKey('nextModeButtonKey');
+const systemModeButtonKey = ValueKey('systemModeButtonKey');
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
@@ -38,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           ElevatedButton(
-            key: changeThemeButtonKey, 
+            key: toggleThemeButtonKey, 
             onPressed: ThemeProvider.of(context).toggle, 
             child: const Text('Change Theme'),
           ),
@@ -49,11 +52,20 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: ThemeProvider.of(context).next, 
             child: const Text('Next Mode'),
           ),
-          Text('Mode: ${ThemeProvider.of(context).mode.toString()}'),
+          Text('Mode: ${ThemeProvider.of(context).name}'),
+
+          ElevatedButton(
+            key: systemModeButtonKey, 
+            onPressed: ThemeProvider.of(context).system, 
+            child: const Text('System Mode'),
+          ),
         ],
       ),
     );
   }
 }
 
-class ThemeServiceTestClass with ThemeService{}
+class ThemeServiceTestClass with ThemeService{
+  @override
+  AppTheme get themes => DefaultMaterialTheme();
+}

@@ -1,3 +1,6 @@
+## 0.0.5
+- Add multi-theme support.
+
 ## 0.0.4
 - Improve topics.
 - Update dart format.

@@ -30,9 +30,10 @@ class YourApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      builder: (mode) => MaterialApp(
+      themes: DefaultMaterialTheme(),
+      builder: (theme) => MaterialApp(
         title: 'Demo App',
-        theme: DefaultMaterialTheme.of(mode),
+        theme: theme,
         darkTheme: DefaultMaterialTheme.dark,
         home: YourHomePage(),
       ),
@@ -58,7 +59,7 @@ ThemeProvider.of(context).next();
 
 ThemeProvider.of(context).previous();
 
-ThemeProvider.of(context).mode = ThemeData.dark;
+ThemeProvider.of(context).mode = ThemeService.darkMode;
 ```
 
 
@@ -66,7 +67,7 @@ ThemeProvider.of(context).mode = ThemeData.dark;
 ## Create Your Themes
 
 ```dart
-class YourMaterialTheme {
+class YourMaterialTheme extends AppTheme<ThemeData> {
 
     final static ThemeData light = ThemeData(
         useMaterial3: true,
@@ -80,8 +81,9 @@ class YourMaterialTheme {
         colorSchemeSeed: Colors.purple,
     );
 
-    // MAKE SURE TO ADD THIS
-    static ThemeData of(ThemeMode mode) => AppTheme.of(mode, light, dark);
+    // Make a list of your themes
+    @override
+    List<ThemeData> themeList() => super.from(light, dark, rest: [other thems]);
 }
 ```
 
@@ -99,9 +101,10 @@ class YourApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      builder: (mode) => CupertinoApp(
+      themes: DefaultCupertinoTheme(),
+      builder: (theme) => CupertinoApp(
         title: 'Demo App',
-        theme: DefaultCupertinoTheme.of(mode),
+        theme: theme,
         home: YourHomePage(),
       ),
     );
@@ -141,6 +144,12 @@ Theme.of(context);
 
 // get current mode?
 ThemeProvider.of(context).mode;
+
+// get current mode name?
+ThemeProvider.of(context).name;
+
+// get name of a mode:
+YourAppTheme.nameOf(mode); // e.g. DefaultCupertinoTheme().nameOf(mode)
 ```
 
 ## Liked Cross Theme Provider?

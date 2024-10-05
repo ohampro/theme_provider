@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/theme_provider.dart';
 
-bool material = true;
+final ValueNotifier<bool> appChangeNotifier = ValueNotifier(true);
 
 void main() {
   runApp(const MyApp());
@@ -13,20 +13,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-      builder: (mode){
-          return material ? 
-          MaterialApp(
-            title: 'Flutter Demo',
-            theme: DefaultMaterialTheme.of(mode),
-            darkTheme: DefaultMaterialTheme.dark,
-            home: const MyHomePage(title: 'Flutter Demo Home Page'),
-          ) : 
-          CupertinoApp(
-            theme: DefaultCupertinoTheme.of(mode),
-            home: const MyCupertinoHomePage(title: 'Flutter Demo Home Page'),
+    final materialTheme = DefaultMaterialTheme();
+    final cupertinoTheme = DefaultCupertinoTheme();
+
+    return ValueListenableBuilder(
+      valueListenable: appChangeNotifier, 
+      builder: (_, material, child) {
+        return material ?
+          ThemeProvider(
+            themes: materialTheme,
+            builder: (theme) {
+                return MaterialApp(
+                  title: 'Flutter Demo',
+                  theme: theme,
+                  darkTheme: DefaultMaterialTheme.dark,
+                  home: const MyHomePage(title: 'Flutter Demo Home Page'),
+                );
+              },
+          )
+        :
+          ThemeProvider(
+            themes: cupertinoTheme,
+            builder: (theme) {
+                return CupertinoApp(
+                  theme: theme,
+                  home: const MyCupertinoHomePage(title: 'Flutter Demo Home Page'),
+                );
+              },
           );
-        },
+      }
     );
   }
 }
@@ -54,50 +69,27 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Wrap(
+              alignment: WrapAlignment.center,
               children: [
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).light, 
-                  icon: const Icon(Icons.light_mode),
-                  label: const Text('light'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).dark, 
-                  icon: const Icon(Icons.dark_mode),
-                  label: const Text('dark'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).system, 
-                  icon: const Icon(Icons.settings), 
-                  label: const Text('system'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).toggle, 
-                  icon: Icon(ThemeProvider.of(context).isDark ? Icons.toggle_off : Icons.toggle_on), 
-                  label: const Text('toggle'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).previous, 
-                  icon: const Icon(Icons.skip_previous), 
-                  label: const Text('previous'),
-                ),
-                ElevatedButton.icon(
-                  onPressed: ThemeProvider.of(context).next, 
-                  icon: const Icon(Icons.skip_next), 
-                  label: const Text('next'),
-                ),
+                _buildButton(ThemeProvider.of(context).light, Icons.light_mode, 'light'),
+                _buildButton(ThemeProvider.of(context).dark, Icons.dark_mode, 'dark'),
+                _buildButton(ThemeProvider.of(context).system, Icons.settings, 'system'),
+                _buildButton(ThemeProvider.of(context).toggle, ThemeProvider.of(context).isDark ? Icons.toggle_off : Icons.toggle_on, 'toggle'),
+                _buildButton(ThemeProvider.of(context).previous, Icons.skip_previous, 'previous'),
+                _buildButton(ThemeProvider.of(context).next, Icons.skip_next, 'next'),
               ],
             ),
             const SizedBox(height: 50,),
-            ElevatedButton.icon(
-              onPressed: () {
-                material = !material;
+            _buildButton(
+              () {
+                appChangeNotifier.value = !appChangeNotifier.value;
                 ThemeProvider.of(context).next();
               }, 
-              icon: Icon(material ? Icons.apple : Icons.android), 
-              label: Text(material ? 'Cupertino' : 'Material'),
+              appChangeNotifier.value ? Icons.apple : Icons.android,
+              appChangeNotifier.value ? 'Cupertino' : 'Material',
             ),
             const SizedBox(height: 50,),
-            Text('${ThemeProvider.of(context).mode} Mode'),
+            Text('${ThemeProvider.of(context).name} Mode'),
           ],
         ),
       ),
@@ -106,6 +98,14 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'toggle',
         child: const Icon(Icons.contrast),
       ),
+    );
+  }
+
+  Widget _buildButton(VoidCallback? onPressed, IconData icon, String label){
+    return ElevatedButton.icon(
+      onPressed: onPressed, 
+      icon: Icon(icon),
+      label: Text(label),
     );
   }
 }
@@ -134,105 +134,46 @@ class _MyCupertinoHomePageState extends State<MyCupertinoHomePage> {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).light, 
-                    child: const Row(
-                      children: [
-                        Icon(Icons.light_mode),
-                        Text('light'),
-                      ],
-                    ), 
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).dark, 
-                    child: const Row(
-                      children: [
-                        Icon(Icons.dark_mode),
-                        Text('dark'),
-                      ],
-                    ), 
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).system, 
-                    child: const Row(
-                      children: [
-                        Icon(Icons.settings), 
-                        Text('system'),
-                      ],
-                    ), 
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).toggle, 
-                    child: Row(
-                      children: [
-                        Icon(ThemeProvider.of(context).isDark ? Icons.toggle_off : Icons.toggle_on), 
-                        const Text('toggle'),
-                      ],
-                    ), 
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).previous, 
-                    child: const Row(
-                      children: [
-                        Icon(Icons.skip_previous), 
-                        Text('previous'),
-                      ],
-                    ), 
-                  ),
-                ),
-                SizedBox(
-                  width: 150,
-                  child: CupertinoButton(
-                    onPressed: ThemeProvider.of(context).next, 
-                    child: const Row(
-                      children: [
-                        Icon(Icons.skip_next), 
-                        Text('next'),
-                      ],
-                    ), 
-                  ),
-                ),
+                _buildButton(ThemeProvider.of(context).light, Icons.light_mode, 'light'),
+                _buildButton(ThemeProvider.of(context).dark, Icons.dark_mode, 'dark'),
+                _buildButton(ThemeProvider.of(context).system, Icons.settings, 'system'),
+                _buildButton(ThemeProvider.of(context).toggle, ThemeProvider.of(context).isDark ? Icons.toggle_off : Icons.toggle_on, 'toggle'),
+                _buildButton(ThemeProvider.of(context).previous, Icons.skip_previous, 'previous'),
+                _buildButton(ThemeProvider.of(context).next, Icons.skip_next, 'next'),
               ],
             ),
             const SizedBox(height: 50,),
-            SizedBox(
-              width: 150,
-              child: CupertinoButton(
-                onPressed: () {
-                  material = !material;
-                  ThemeProvider.of(context).previous();
-                }, 
-                child: Row(
-                  children: [
-                    Icon(material ? Icons.apple : Icons.android), 
-                    Text(material ? 'Cupertino' : 'Material'),
-                  ],
-                ), 
-              ),
+            _buildButton(
+              () {
+                appChangeNotifier.value = !appChangeNotifier.value;
+                ThemeProvider.of(context).previous();
+              }, 
+              appChangeNotifier.value ? Icons.apple : Icons.android, 
+              appChangeNotifier.value ? 'Cupertino' : 'Material'
             ),
             const SizedBox(height: 50,),
-            Text('${ThemeProvider.of(context).mode} Mode'),
+            Text('${ThemeProvider.of(context).name} Mode'),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildButton(VoidCallback? onPressed, IconData icon, String label){
+    return SizedBox(
+      width: 150,
+      child: CupertinoButton(
+        onPressed: onPressed, 
+        child: Row(
+          children: [
+            Icon(icon),
+            Text(label),
+          ],
+        ), 
       ),
     );
   }

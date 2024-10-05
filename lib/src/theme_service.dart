@@ -1,62 +1,73 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show ValueNotifier;
+import 'package:x_theme_provider/src/app_theme.dart';
 
 /// ThemeService provides methods for managing and changing mode.
 mixin ThemeService {
-  ThemeMode _mode = ThemeMode.system;
+
+  /// System mode
+  static const int systemMode = -1;
+
+  /// System mode
+  static const int lightMode = 0;
+
+  /// System mode
+  static const int darkMode = 1;
+
+  int _mode = systemMode;
 
   /// current mode
-  ThemeMode get mode => _mode;
+  int get mode => _mode;
 
-  set mode(ThemeMode mode) {
+  /// list of available themes.
+  AppTheme get themes;
+
+  set mode(int mode) {
     _mode = mode;
     _changeNotifier.value = mode;
   }
 
-  /// checks if current mode is `ThemeMode.light`
-  bool get isLight => _mode == ThemeMode.light;
+  /// checks if current mode is `lightMode`
+  bool get isLight => _mode == lightMode;
 
-  /// checks if current mode is `ThemeMode.dark`
-  bool get isDark => _mode == ThemeMode.dark;
+  /// checks if current mode is `darkMode`
+  bool get isDark => _mode == darkMode;
 
-  /// checks if current mode is `ThemeMode.system`
-  bool get isSystem => _mode == ThemeMode.system;
+  /// checks if current mode is `systemMode`
+  bool get isSystem => _mode == systemMode;
 
-  final ValueNotifier<ThemeMode> _changeNotifier =
-      ValueNotifier(ThemeMode.system);
+  final ValueNotifier<int> _changeNotifier =
+      ValueNotifier(systemMode);
 
   /// Use it to listen to the mode changes.
-  ValueNotifier<ThemeMode> get changeNotifier => _changeNotifier;
+  ValueNotifier<int> get changeNotifier => _changeNotifier;
 
   /// toggle mode between light and dark.
   void toggle() {
-    if (_mode != ThemeMode.dark) {
-      mode = ThemeMode.dark;
+    if (_mode != darkMode) {
+      mode = darkMode;
       return;
     }
 
-    if (_mode != ThemeMode.light) {
-      mode = ThemeMode.light;
+    if (_mode != lightMode) {
+      mode = lightMode;
     }
   }
 
-  /// set mode to `ThemeMode.light`
-  void light() => mode = ThemeMode.light;
+  /// set mode to `lightMode`
+  void light() => mode = lightMode;
 
-  /// set mode to `ThemeMode.dark`
-  void dark() => mode = ThemeMode.dark;
+  /// set mode to `darkMode`
+  void dark() => mode = darkMode;
 
-  /// set mode to `ThemeMode.system`
-  void system() => mode = ThemeMode.system;
+  /// set mode to `systemMode`
+  void system() => mode = systemMode;
 
-  /// set mode to the next item in ThemeMode cycle.
-  void next() {
-    final nextIndex = (_mode.index + 1) % ThemeMode.values.length;
-    mode = ThemeMode.values[nextIndex];
-  }
+  /// set mode to the next item.
+  void next() => mode = (mode + 1) % themes.length;
 
-  /// set mode to the previous item in ThemeMode cycle.
-  void previous() {
-    final previousIndex = (_mode.index - 1) % ThemeMode.values.length;
-    mode = ThemeMode.values[previousIndex];
-  }
+  /// set mode to the previous item.
+  void previous() => mode = (mode - 1) % themes.length;
+
+  /// return the name of current mode
+  String get name => themes.nameOf(mode);
 }

@@ -1,28 +1,34 @@
 library x_theme_provider;
 
 import 'package:flutter/material.dart';
+import 'package:x_theme_provider/src/app_theme.dart';
 import 'package:x_theme_provider/src/inherited_theme_provider.dart';
 import 'package:x_theme_provider/src/theme_service.dart';
 
+export 'package:x_theme_provider/src/app_theme.dart';
 export 'package:x_theme_provider/src/default_material_theme.dart';
 export 'package:x_theme_provider/src/default_cupertino_theme.dart';
 
 /// Builds widget based on mode.
-typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
+typedef ThemeProviderBuilder<T> = Widget Function(T theme);
 
 /// This widget provides theme mode by its builder and manages system theme changes.
-class ThemeProvider extends StatefulWidget {
+class ThemeProvider<T> extends StatefulWidget {
+  /// size of themes
+  final AppTheme<T> themes;
+
   /// Build a widget based on mode argument. (most probably a MaterialApp or CupertinoApp)
-  final ThemeProviderBuilder builder;
+  final ThemeProviderBuilder<T> builder;
 
   // ignore: public_member_api_docs
   const ThemeProvider({
     super.key,
+    required this.themes,
     required this.builder,
   });
 
   @override
-  State<StatefulWidget> createState() => _ThemeProviderState();
+  State<StatefulWidget> createState() => _ThemeProviderState<T>();
 
   /// Allow access to theme services like toggle, ligh, dark etc.
   static ThemeService of(BuildContext context) {
@@ -32,8 +38,13 @@ class ThemeProvider extends StatefulWidget {
   }
 }
 
-class _ThemeProviderState extends State<ThemeProvider>
+class _ThemeProviderState<T> extends State<ThemeProvider<T>>
     with ThemeService, WidgetsBindingObserver {
+
+  /// list of available themes.
+  @override
+  AppTheme<T> get themes => widget.themes;
+
   @override
   void initState() {
     changeNotifier.addListener(_updateState);
@@ -43,7 +54,7 @@ class _ThemeProviderState extends State<ThemeProvider>
 
   @override
   Widget build(BuildContext context) {
-    final app = widget.builder(mode);
+    final app = widget.builder(themes.of(mode));
 
     return InheritedThemeProvider(
       mode = mode,

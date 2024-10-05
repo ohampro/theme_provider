@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:x_theme_provider/src/default_material_theme.dart';
+import 'package:x_theme_provider/src/theme_service.dart';
 import 'helpers/my_app.dart';
 
 void main() {
@@ -10,16 +12,16 @@ void main() {
       themeService = ThemeServiceTestClass();
     });
 
-    test('should init with light theme', (){
-      expect(themeService.mode, ThemeMode.system);
+    test('should init with system mode', (){
+      expect(themeService.mode, ThemeService.systemMode);
     });
 
     test('should change mode when requested', (){
-      themeService.mode = ThemeMode.dark;
-      expect(themeService.mode, ThemeMode.dark);
+      themeService.mode = ThemeService.darkMode;
+      expect(themeService.mode, ThemeService.darkMode);
 
-      themeService.mode = ThemeMode.system;
-      expect(themeService.mode, ThemeMode.system);
+      themeService.mode = ThemeService.systemMode;
+      expect(themeService.mode, ThemeService.systemMode);
     });
   });
 
@@ -38,7 +40,7 @@ void main() {
 
       // Act 1
       // toogle to dark
-      await tester.tap(find.byKey(changeThemeButtonKey));
+      await tester.tap(find.byKey(toggleThemeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
@@ -46,7 +48,7 @@ void main() {
 
       // Act 2
       // toogle to light
-      await tester.tap(find.byKey(changeThemeButtonKey));
+      await tester.tap(find.byKey(toggleThemeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
@@ -64,7 +66,7 @@ void main() {
 
       // Assert
       expect(find.text(Brightness.light.toString()), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.lightMode)}'), findsOneWidget);
 
       // Act 2
       // light to dark
@@ -73,24 +75,24 @@ void main() {
 
       // Assert
       expect(find.text(Brightness.dark.toString()), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.dark.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.darkMode)}'), findsOneWidget);
 
       // Act 3
-      // dark to system
-      await tester.tap(find.byKey(nextModeButtonKey));
-      await tester.pumpAndSettle();
-
-      // Assert
-      expect(find.text('Mode: ${ThemeMode.system.toString()}'), findsOneWidget);
-
-      // Act 4
-      // system to light again
+      // dark to light again
       await tester.tap(find.byKey(nextModeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.text(Brightness.light.toString()), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.lightMode)}'), findsOneWidget);
+
+      // Act 4
+      // light to system
+      await tester.tap(find.byKey(systemModeButtonKey));
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.systemMode)}'), findsOneWidget);
     });
   });
 }
