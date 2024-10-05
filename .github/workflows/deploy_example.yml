@@ -23,10 +23,12 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: flutter pub get
+      working-directory: example
 
     # Build the web app
     - name: Build Flutter Web
-      run: flutter build web --release --target example/lib/main.dart
+      run: flutter build web --release
+      working-directory: example
 
     # Deploy to gh-pages branch
     - name: Deploy to GitHub Pages
