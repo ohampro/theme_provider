@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter/widgets.dart';
 
-class InheritedThemeProvider extends InheritedWidget{
+class InheritedThemeProvider extends InheritedWidget {
   final ThemeMode mode;
 
   const InheritedThemeProvider(this.mode, {super.key, required super.child});

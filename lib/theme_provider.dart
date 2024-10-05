@@ -9,25 +9,26 @@ export 'package:x_theme_provider/src/default_cupertino_theme.dart';
 
 typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
 
-class ThemeProvider extends StatefulWidget{
+class ThemeProvider extends StatefulWidget {
   final ThemeProviderBuilder builder;
 
   const ThemeProvider({
-    super.key, 
+    super.key,
     required this.builder,
   });
 
   @override
   State<StatefulWidget> createState() => _ThemeProviderState();
 
-  static ThemeService of(BuildContext context){
+  static ThemeService of(BuildContext context) {
     InheritedThemeProvider.of(context); // propagate build to widget tree
-    return context.findAncestorStateOfType<State<ThemeProvider>>()! as ThemeService;
+    return context.findAncestorStateOfType<State<ThemeProvider>>()!
+        as ThemeService;
   }
 }
 
-class _ThemeProviderState extends State<ThemeProvider> with ThemeService, WidgetsBindingObserver{
-
+class _ThemeProviderState extends State<ThemeProvider>
+    with ThemeService, WidgetsBindingObserver {
   @override
   void initState() {
     changeNotifier.addListener(_updateState);
@@ -52,7 +53,7 @@ class _ThemeProviderState extends State<ThemeProvider> with ThemeService, Widget
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-  
+
   void _updateState() {
     if (mounted) setState(() {});
   }

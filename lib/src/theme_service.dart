@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 mixin ThemeService {
@@ -14,7 +13,8 @@ mixin ThemeService {
   bool get isDark => _mode == ThemeMode.dark;
   bool get isSystem => _mode == ThemeMode.system;
 
-  final ValueNotifier<ThemeMode> _changeNotifier = ValueNotifier(ThemeMode.system);
+  final ValueNotifier<ThemeMode> _changeNotifier =
+      ValueNotifier(ThemeMode.system);
   ValueNotifier<ThemeMode> get changeNotifier => _changeNotifier;
 
   void toggle() {
@@ -22,12 +22,12 @@ mixin ThemeService {
       mode = ThemeMode.dark;
       return;
     }
-    
-    if (_mode != ThemeMode.light){
+
+    if (_mode != ThemeMode.light) {
       mode = ThemeMode.light;
     }
   }
-  
+
   void light() => mode = ThemeMode.light;
   void dark() => mode = ThemeMode.dark;
   void system() => mode = ThemeMode.system;
