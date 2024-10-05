@@ -27,7 +27,7 @@ jobs:
 
     # Build the web app
     - name: Build Flutter Web
-      run: flutter build web --release
+      run: flutter build web --release --base-href /theme_provider/
       working-directory: example
 
     # Deploy to gh-pages branch
@@ -37,5 +37,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: example/build/web
         # deploy to gh-pages branch
-        branch: gh-pages
+        publish_branch: gh-pages
         force_orphan: true  # Create an orphan branch to keep it separate
