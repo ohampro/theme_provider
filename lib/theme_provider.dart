@@ -7,11 +7,15 @@ import 'package:x_theme_provider/src/theme_service.dart';
 export 'package:x_theme_provider/src/default_material_theme.dart';
 export 'package:x_theme_provider/src/default_cupertino_theme.dart';
 
+/// Builds widget based on mode.
 typedef ThemeProviderBuilder = Widget Function(ThemeMode mode);
 
+/// This widget provides theme mode by its builder and manages system theme changes.
 class ThemeProvider extends StatefulWidget {
+  /// Build a widget based on mode argument. (most probably a MaterialApp or CupertinoApp)
   final ThemeProviderBuilder builder;
 
+  // ignore: public_member_api_docs
   const ThemeProvider({
     super.key,
     required this.builder,
@@ -20,6 +24,7 @@ class ThemeProvider extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ThemeProviderState();
 
+  /// Allow access to theme services like toggle, ligh, dark etc.
   static ThemeService of(BuildContext context) {
     InheritedThemeProvider.of(context); // propagate build to widget tree
     return context.findAncestorStateOfType<State<ThemeProvider>>()!
