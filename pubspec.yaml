@@ -65,7 +65,6 @@ flutter:
   # https://flutter.dev/to/font-from-package
 
 topics:
-  - flutter
   - ui
   - theme
   - theme-provider
