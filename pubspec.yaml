@@ -57,6 +57,10 @@ flutter:
 topics:
   - flutter
   - ui
+  - theme
+  - theme-provider
+  - theme-switcher
+  - reusable
 
 keywords:
   - theme
@@ -64,7 +68,7 @@ keywords:
   - dynamic-theme
   - theme-provider
   - theme-switcher
-  - UI
+  - ui
   - reusable
   - widget
   - design
