@@ -23,8 +23,6 @@ Demo: [Theme Provider](https://ohampro.github.io/theme_provider/).
 Wrap your `XApp` with `ThemeProvider`:
 
 ```dart
-import 'package:theme_provider/theme_provider.dart';
-
 class YourApp extends StatelessWidget {
 
   @override
@@ -83,7 +81,7 @@ class YourMaterialTheme extends AppTheme<ThemeData> {
 
     // Make a list of your themes
     @override
-    List<ThemeData> themeList() => super.from(light, dark, rest: [other thems]);
+    List<ThemeData> themeList() => super.from(light, dark, rest: [other themes]);
 }
 ```
 
@@ -94,8 +92,6 @@ class YourMaterialTheme extends AppTheme<ThemeData> {
 Just use `DefaultCupertinoTheme` or define yours.
 
 ```dart
-import 'package:theme_provider/theme_provider.dart';
-
 class YourApp extends StatelessWidget {
 
   @override

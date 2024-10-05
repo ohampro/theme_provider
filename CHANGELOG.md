@@ -1,3 +1,6 @@
+## 0.0.6
+- Fix typo.
+
 ## 0.0.5
 - Add multi-theme support.
 
