@@ -24,7 +24,7 @@ mixin ThemeService {
   final ValueNotifier<ThemeMode> _changeNotifier =
       ValueNotifier(ThemeMode.system);
 
-  /// Use it to listen to the mode changes.  
+  /// Use it to listen to the mode changes.
   ValueNotifier<ThemeMode> get changeNotifier => _changeNotifier;
 
   /// toggle mode between light and dark.

@@ -1,5 +1,6 @@
 ## 0.0.4
 - Improve topics.
+- Update dart format.
 
 ## 0.0.3
 - Update package topics and keywords.

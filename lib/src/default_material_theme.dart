@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/src/app_theme.dart';
 
-/// This class provides a basic theme for test purpose. 
+/// This class provides a basic theme for test purpose.
 class DefaultMaterialTheme {
   // ignore: public_member_api_docs
   static final ThemeData light = ThemeData(
