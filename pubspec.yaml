@@ -1,6 +1,6 @@
 name: x_theme_provider
 description: Effortlessly switch between light, dark, and system modes, or create custom themes. Seamlessly integrates with both MaterialApp and CupertinoApp.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/ohampro/theme_provider
 license: MIT
 

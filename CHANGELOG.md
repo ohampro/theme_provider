@@ -1,3 +1,11 @@
+## 0.0.3
+- Update package topics and keywords.
+- Update Readme, reduce button size.
+- Update dart format.
+- Fix package description.
+- Improve documentation.
+- Add screenshots to package.
+
 ## 0.0.2
 - Simplify import package in pub.dev
 
