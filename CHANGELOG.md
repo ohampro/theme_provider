@@ -1,6 +1,7 @@
 ## 0.0.4
 - Improve topics.
 - Update dart format.
+- Fix example web app js not found.
 
 ## 0.0.3
 - Update package topics and keywords.
