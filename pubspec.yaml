@@ -4,6 +4,16 @@ version: 0.0.2
 homepage: https://github.com/ohampro/theme_provider
 license: MIT
 
+screenshots:
+  - description: Material Dark
+    path: screenshots/material_dark.jpeg
+  - description: Material Light
+    path: screenshots/material_light.jpeg
+  - description: Cupertino Dark
+    path: screenshots/cupertino_dark.jpeg
+  - description: Cupertino Light
+    path: screenshots/cupertino_light.jpeg
+
 environment:
   sdk: ^3.5.3
   flutter: ">=1.17.0"
