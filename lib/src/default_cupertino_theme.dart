@@ -25,5 +25,8 @@ class DefaultCupertinoTheme extends AppTheme<CupertinoThemeData> {
 
   /// Make a list of themes
   @override
-  List<CupertinoThemeData> themeList() => super.from(light, dark,);      
+  List<CupertinoThemeData> themeList() => super.from(
+        light,
+        dark,
+      );
 }

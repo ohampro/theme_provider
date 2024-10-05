@@ -19,5 +19,8 @@ class DefaultMaterialTheme extends AppTheme<ThemeData> {
 
   /// Make a list of themes
   @override
-  List<ThemeData> themeList() => super.from(light, dark,);
+  List<ThemeData> themeList() => super.from(
+        light,
+        dark,
+      );
 }

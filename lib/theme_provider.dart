@@ -40,7 +40,6 @@ class ThemeProvider<T> extends StatefulWidget {
 
 class _ThemeProviderState<T> extends State<ThemeProvider<T>>
     with ThemeService, WidgetsBindingObserver {
-
   /// list of available themes.
   @override
   AppTheme<T> get themes => widget.themes;

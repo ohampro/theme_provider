@@ -3,7 +3,6 @@ import 'package:x_theme_provider/src/app_theme.dart';
 
 /// ThemeService provides methods for managing and changing mode.
 mixin ThemeService {
-
   /// System mode
   static const int systemMode = -1;
 
@@ -35,8 +34,7 @@ mixin ThemeService {
   /// checks if current mode is `systemMode`
   bool get isSystem => _mode == systemMode;
 
-  final ValueNotifier<int> _changeNotifier =
-      ValueNotifier(systemMode);
+  final ValueNotifier<int> _changeNotifier = ValueNotifier(systemMode);
 
   /// Use it to listen to the mode changes.
   ValueNotifier<int> get changeNotifier => _changeNotifier;
