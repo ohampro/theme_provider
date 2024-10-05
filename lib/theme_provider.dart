@@ -8,6 +8,7 @@ import 'package:x_theme_provider/src/theme_service.dart';
 export 'package:x_theme_provider/src/app_theme.dart';
 export 'package:x_theme_provider/src/default_material_theme.dart';
 export 'package:x_theme_provider/src/default_cupertino_theme.dart';
+export 'package:x_theme_provider/src/theme_service.dart';
 
 /// Builds widget based on mode.
 typedef ThemeProviderBuilder<T> = Widget Function(T theme);

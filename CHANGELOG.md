@@ -1,5 +1,6 @@
 ## 0.0.6
 - Fix typo.
+- Refactor: Simplified and beautified example code
 
 ## 0.0.5
 - Add multi-theme support.
