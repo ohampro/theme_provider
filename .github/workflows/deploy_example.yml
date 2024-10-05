@@ -26,7 +26,7 @@ jobs:
 
     # Build the web app
     - name: Build Flutter Web
-      run: flutter build web --release --web-renderer html --target example/lib/main.dart
+      run: flutter build web --release --target example/lib/main.dart
 
     # Deploy to gh-pages branch
     - name: Deploy to GitHub Pages
