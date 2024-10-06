@@ -1,7 +1,8 @@
 name: x_theme_provider
 description: Effortlessly switch between light, dark, and system modes, or create custom themes. Seamlessly integrates with both MaterialApp and CupertinoApp.
 version: 0.0.6
-homepage: https://github.com/ohampro/theme_provider
+homepage: https://ohampro.github.io/theme_provider/
+repository: https://github.com/ohampro/theme_provider
 license: MIT
 
 screenshots:
@@ -65,8 +66,8 @@ flutter:
   # https://flutter.dev/to/font-from-package
 
 topics:
-  - theming
   - theme
+  - colorscheme
   - theme-provider
   - theme-switcher
   - dynamic-theme

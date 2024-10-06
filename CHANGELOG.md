@@ -3,6 +3,7 @@
 - Refactor: Simplified and beautified example code
 - Refactor: Split Material and Cupertino example for clarity.
 - Revamp UI for better user experience and cleaner layout
+- Update package info, dart format.
 
 
 ## 0.0.5

@@ -1,5 +1,5 @@
-import 'package:example/cupertino_app.dart';
 import 'package:flutter/material.dart';
+import 'package:example/cupertino_app.dart';
 import 'package:x_theme_provider/theme_provider.dart';
 
 

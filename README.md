@@ -1,15 +1,3 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
 <!-- ![cross_theme_provider](https://raw.githubusercontent.com/ohampro/theme_provider/main/banner.png) -->
 
 # Intuitive Theme Provider
@@ -24,13 +12,12 @@ Wrap your `XApp` with `ThemeProvider`:
 
 ```dart
 class YourApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
       themes: DefaultMaterialTheme(),
       builder: (theme) => MaterialApp(
-        title: 'Demo App',
+        title: title,
         theme: theme,
         darkTheme: DefaultMaterialTheme.dark,
         home: YourHomePage(),
@@ -66,7 +53,6 @@ ThemeProvider.of(context).mode = ThemeService.darkMode;
 
 ```dart
 class YourMaterialTheme extends AppTheme<ThemeData> {
-
     final static ThemeData light = ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
@@ -87,19 +73,18 @@ class YourMaterialTheme extends AppTheme<ThemeData> {
 
 
 
-## CupertinoTheme?
+## CupertinoApp?
 
 Just use `DefaultCupertinoTheme` or define yours.
 
 ```dart
 class YourApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
       themes: DefaultCupertinoTheme(),
       builder: (theme) => CupertinoApp(
-        title: 'Demo App',
+        title: title,
         theme: theme,
         home: YourHomePage(),
       ),
@@ -110,7 +95,7 @@ class YourApp extends StatelessWidget {
 
 
 
-## Listen to the mode changes
+## Listen to the changes
 
 ```dart
 ThemeProvider.of(context).changeNotifier.addListener(() {
@@ -124,9 +109,7 @@ Or react on UI:
 ```dart
 ValueListenableBuilder(
   valueListenable: ThemeProvider.of(context).changeNotifier,
-  builder: (_, mode, child) {
-    // update your UI
-  },
+  ...
 );
 ```
 
