@@ -1,64 +1,25 @@
-import 'package:flutter/cupertino.dart';
+import 'package:example/cupertino_app.dart';
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/theme_provider.dart';
 
-final ValueNotifier<bool> appChangeNotifier = ValueNotifier(true);
 
-void main() => runApp(const MyApp());
+void main() => runApp(const MyMaterialApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyMaterialApp extends StatelessWidget {
+  const MyMaterialApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: appChangeNotifier, 
-      builder: (_, material, child) => material 
-        ? ThemeProvider(
-            themes: DefaultMaterialTheme(),
-            builder: (theme) => MaterialApp(
-                  title: 'Flutter Demo',
-                  theme: theme,
-                  darkTheme: DefaultMaterialTheme.dark,
-                  home: const MyHomePage(title: 'Flutter Demo Home Page'),
-                ),
-          )
-        : ThemeProvider(
-            themes: DefaultCupertinoTheme(),
-            builder: (theme) => CupertinoApp(
-                  theme: theme,
-                  home: const MyCupertinoHomePage(title: 'Flutter Demo Home Page'),
-                ),
+    return ThemeProvider(
+      themes: DefaultMaterialTheme(),
+      builder: (theme) => MaterialApp(
+            title: 'Flutter Demo',
+            theme: theme,
+            darkTheme: DefaultMaterialTheme.dark,
+            home: const MyHomePage(title: 'Flutter Demo Home Page'),
           ),
     );
   }
-}
-
-
-typedef BtnBuilder = Widget Function(VoidCallback? onPressed, IconData icon, String label);
-
-List<Widget> _buildFeatures(BuildContext context, BtnBuilder builder){
-  final ThemeService service = ThemeProvider.of(context);
-
-  return [
-    builder(service.light, Icons.light_mode, 'light'),
-    builder(service.dark, Icons.dark_mode, 'dark'),
-    builder(service.system, Icons.settings, 'system'),
-    builder(service.toggle, service.isDark ? Icons.toggle_off : Icons.toggle_on, 'toggle'),
-    builder(service.previous, Icons.skip_previous, 'previous'),
-    builder(service.next, Icons.skip_next, 'next'),
-  ];
-}
-
-Widget _buildAppSwitchFeature(BuildContext context, BtnBuilder builder){
-  return builder(
-    () {
-      appChangeNotifier.value = !appChangeNotifier.value;
-      ThemeProvider.of(context).next();
-    }, 
-    appChangeNotifier.value ? Icons.apple : Icons.android,
-    appChangeNotifier.value ? 'Cupertino' : 'Material',
-  );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -78,18 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: _buildBody(
-        children: <Widget>[
-          Wrap(
-            alignment: WrapAlignment.center,
-            children: _buildFeatures(context, _buildButton),
-          ),
-          const SizedBox(height: 50,),
-          _buildAppSwitchFeature(context, _buildButton),
-          const SizedBox(height: 50,),
-          Text('${ThemeProvider.of(context).name} Mode'),
-        ],
-      ),      
+      body: buildBody(context, _buildButton, _buildAppSwitch),   
       floatingActionButton: FloatingActionButton(
         onPressed: ThemeProvider.of(context).toggle,
         tooltip: 'toggle',
@@ -105,65 +55,52 @@ class _MyHomePageState extends State<MyHomePage> {
       label: Text(label),
     );
   }
-}
 
-
-// ------------------------------- Cupertino App
-
-class MyCupertinoHomePage extends StatefulWidget {
-  const MyCupertinoHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyCupertinoHomePage> createState() => _MyCupertinoHomePageState();
-}
-
-class _MyCupertinoHomePageState extends State<MyCupertinoHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: const Text('Cupertino Theme'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      child: _buildBody(
-        children: <Widget>[
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: _buildFeatures(context, _buildButton),
-          ),
-          const SizedBox(height: 50,),
-          _buildAppSwitchFeature(context, _buildButton),
-          const SizedBox(height: 50,),
-          Text('${ThemeProvider.of(context).name} Mode'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildButton(VoidCallback? onPressed, IconData icon, String label){
-    return SizedBox(
-      width: 150,
-      child: CupertinoButton(
-        onPressed: onPressed, 
-        child: Row(
-          children: [
-            Icon(icon),
-            Text(label),
-          ],
-        ), 
-      ),
+  Widget _buildAppSwitch(BuildContext context, BtnBuilder btnBuilder){
+    return btnBuilder(
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MyCupertinoApp()),
+      ), 
+      Icons.apple, 
+      'Cupertino',
     );
   }
 }
 
-Widget _buildBody({required List<Widget> children}){
+typedef BtnBuilder = Widget Function(VoidCallback? onPressed, IconData icon, String label);
+
+Widget buildBody(
+  BuildContext context, 
+  BtnBuilder btnBuilder, 
+  Function(BuildContext context, BtnBuilder builder) buildAppSwitch, 
+) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: children,
+      children: <Widget>[
+        Wrap(
+          alignment: WrapAlignment.center,
+          children: buildFeatures(context, btnBuilder),
+        ),
+        const SizedBox(height: 50,),
+        buildAppSwitch(context, btnBuilder),
+        const SizedBox(height: 50,),
+        Text('${ThemeProvider.of(context).name} Mode'),
+      ]
     ),
   );
+}
+
+List<Widget> buildFeatures(BuildContext context, BtnBuilder btnBuilder){
+  final ThemeService service = ThemeProvider.of(context);
+
+  return [
+    btnBuilder(service.light, Icons.light_mode, 'light'),
+    btnBuilder(service.dark, Icons.dark_mode, 'dark'),
+    btnBuilder(service.system, Icons.settings, 'system'),
+    btnBuilder(service.toggle, service.isDark ? Icons.toggle_off : Icons.toggle_on, 'toggle'),
+    btnBuilder(service.previous, Icons.skip_previous, 'previous'),
+    btnBuilder(service.next, Icons.skip_next, 'next'),
+  ];
 }

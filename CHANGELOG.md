@@ -1,6 +1,8 @@
 ## 0.0.6
 - Fix typo.
 - Refactor: Simplified and beautified example code
+- Refactor: Split Material and Cupertino example for clarity.
+
 
 ## 0.0.5
 - Add multi-theme support.
