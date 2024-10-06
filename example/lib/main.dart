@@ -49,10 +49,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildButton(VoidCallback? onPressed, IconData icon, String label){
-    return ElevatedButton.icon(
-      onPressed: onPressed, 
-      icon: Icon(icon),
-      label: Text(label),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton.icon(
+        onPressed: onPressed, 
+        icon: Icon(icon),
+        label: Text(label),
+      ),
     );
   }
 
@@ -79,14 +82,16 @@ Widget buildBody(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Text('${ThemeProvider.of(context).name} Mode', 
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 50,),
         Wrap(
           alignment: WrapAlignment.center,
           children: buildFeatures(context, btnBuilder),
         ),
         const SizedBox(height: 50,),
         buildAppSwitch(context, btnBuilder),
-        const SizedBox(height: 50,),
-        Text('${ThemeProvider.of(context).name} Mode'),
       ]
     ),
   );

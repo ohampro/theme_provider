@@ -47,7 +47,10 @@ class _MyCupertinoHomePageState extends State<MyCupertinoHomePage> {
         onPressed: onPressed, 
         child: Row(
           children: [
-            Icon(icon),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(icon),
+            ),
             Text(label),
           ],
         ), 
