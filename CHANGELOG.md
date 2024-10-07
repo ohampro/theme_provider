@@ -1,10 +1,14 @@
+## 0.1.0
+- Fix InheritedWidget update issue.
+- Update package description.
+- Simplify multi-theme support.
+
 ## 0.0.6
 - Fix typo.
 - Refactor: Simplified and beautified example code
 - Refactor: Split Material and Cupertino example for clarity.
 - Revamp UI for better user experience and cleaner layout
 - Update package info, dart format.
-
 
 ## 0.0.5
 - Add multi-theme support.

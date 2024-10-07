@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:x_theme_provider/src/default_material_theme.dart';
-import 'package:x_theme_provider/src/theme_service.dart';
 import 'helpers/my_app.dart';
 
 void main() {
@@ -13,15 +11,18 @@ void main() {
     });
 
     test('should init with system mode', (){
-      expect(themeService.mode, ThemeService.systemMode);
+      expect(themeService.isSystem, true);
     });
 
     test('should change mode when requested', (){
-      themeService.mode = ThemeService.darkMode;
-      expect(themeService.mode, ThemeService.darkMode);
+      themeService.dark();
+      expect(themeService.isDark, true);
 
-      themeService.mode = ThemeService.systemMode;
-      expect(themeService.mode, ThemeService.systemMode);
+      themeService.light();
+      expect(themeService.isLight, true);
+
+      themeService.system();
+      expect(themeService.isSystem, true);
     });
   });
 
@@ -29,9 +30,9 @@ void main() {
 
     testWidgets('Widget Should be intuitive and easy to use', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(const MyApp());
+      await tester.pumpWidget(const MyApp()); // intuitive MyApp
 
-      expect(find.text(Brightness.light.toString()), findsOneWidget);
+      expect(find.text(kLightBrightnessString), findsOneWidget);
     });
 
     testWidgets('Toggle mode should show dark mode and vise versa', (WidgetTester tester) async {
@@ -44,7 +45,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(Brightness.dark.toString()), findsOneWidget);
+      expect(find.text(kDarkBrightnessString), findsOneWidget);
 
       // Act 2
       // toogle to light
@@ -52,7 +53,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(Brightness.light.toString()), findsOneWidget);
+      expect(find.text(kLightBrightnessString), findsOneWidget);
     });
 
     testWidgets('next mode should show light, then dark, then system, then light again', (WidgetTester tester) async {
@@ -65,8 +66,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(Brightness.light.toString()), findsOneWidget);
-      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.lightMode)}'), findsOneWidget);
+      expect(find.text(kLightBrightnessString), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
 
       // Act 2
       // light to dark
@@ -74,8 +75,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(Brightness.dark.toString()), findsOneWidget);
-      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.darkMode)}'), findsOneWidget);
+      expect(find.text(kDarkBrightnessString), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.dark.toString()}'), findsOneWidget);
 
       // Act 3
       // dark to light again
@@ -83,8 +84,8 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text(Brightness.light.toString()), findsOneWidget);
-      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.lightMode)}'), findsOneWidget);
+      expect(find.text(kLightBrightnessString), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
 
       // Act 4
       // light to system
@@ -92,7 +93,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text('Mode: ${DefaultMaterialTheme().nameOf(ThemeService.systemMode)}'), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.system.toString()}'), findsOneWidget);
     });
   });
 }
+
+String get kLightBrightnessString => 'Brightness: ${Brightness.light.toString()}';
+String get kDarkBrightnessString => 'Brightness: ${Brightness.dark.toString()}';

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:x_theme_provider/src/app_theme.dart';
+import 'package:x_theme_provider/src/cupertino_app_theme.dart';
 
 /// This class provides a basic theme for test purpose.
-class DefaultCupertinoTheme extends AppTheme<CupertinoThemeData> {
+class DefaultCupertinoAppTheme extends CupertinoAppTheme {
   // ignore: public_member_api_docs
   static const CupertinoThemeData light = CupertinoThemeData(
     brightness: Brightness.light,
@@ -25,8 +25,8 @@ class DefaultCupertinoTheme extends AppTheme<CupertinoThemeData> {
 
   /// Make a list of themes
   @override
-  List<CupertinoThemeData> themeList() => super.from(
+  List<CupertinoThemeData> themeList() => [
         light,
         dark,
-      );
+      ];
 }

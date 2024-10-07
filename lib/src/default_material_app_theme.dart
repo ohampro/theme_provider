@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:x_theme_provider/src/app_theme.dart';
+import 'package:x_theme_provider/src/material_app_theme.dart';
 
 /// This class provides a basic theme for test purpose.
-class DefaultMaterialTheme extends AppTheme<ThemeData> {
+class DefaultMaterialAppTheme extends MaterialAppTheme {
   // ignore: public_member_api_docs
   static final ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -19,8 +19,8 @@ class DefaultMaterialTheme extends AppTheme<ThemeData> {
 
   /// Make a list of themes
   @override
-  List<ThemeData> themeList() => super.from(
+  List<ThemeData> themeList() => [
         light,
         dark,
-      );
+      ];
 }

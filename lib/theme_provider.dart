@@ -6,8 +6,8 @@ import 'package:x_theme_provider/src/inherited_theme_provider.dart';
 import 'package:x_theme_provider/src/theme_service.dart';
 
 export 'package:x_theme_provider/src/app_theme.dart';
-export 'package:x_theme_provider/src/default_material_theme.dart';
-export 'package:x_theme_provider/src/default_cupertino_theme.dart';
+export 'package:x_theme_provider/src/default_material_app_theme.dart';
+export 'package:x_theme_provider/src/default_cupertino_app_theme.dart';
 export 'package:x_theme_provider/src/theme_service.dart';
 
 /// Builds widget based on mode.
@@ -43,7 +43,7 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>>
     with ThemeService, WidgetsBindingObserver {
   /// list of available themes.
   @override
-  AppTheme<T> get themes => widget.themes;
+  AppTheme<T> get appTheme => widget.themes;
 
   @override
   void initState() {
@@ -54,10 +54,10 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>>
 
   @override
   Widget build(BuildContext context) {
-    final app = widget.builder(themes.of(mode));
+    final app = widget.builder(theme());
 
     return InheritedThemeProvider(
-      mode = mode,
+      index: index,
       child: app,
     );
   }

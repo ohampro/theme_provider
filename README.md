@@ -1,10 +1,14 @@
 <!-- ![cross_theme_provider](https://raw.githubusercontent.com/ohampro/theme_provider/main/banner.png) -->
 
-# Intuitive Theme Provider
+## You're looking for:
+- Dark mode support?
+- An easy way to manage themes?
+- Pre-made themes?
+- Customizable theme?
 
-Support for **light** and **dark** theme in your Flutter app and define your custom themes.
+All with minimal coding and seamless integration for both MaterialApp and CupertinoApp.
 
-Demo: [Theme Provider](https://ohampro.github.io/theme_provider/).
+**Demo**: [Theme Provider](https://ohampro.github.io/theme_provider/).
 
 ## Usage
 
@@ -15,17 +19,18 @@ class YourApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      themes: DefaultMaterialTheme(),
+      themes: YourMaterialAppTheme(), // Or DefaultMaterialAppTheme
       builder: (theme) => MaterialApp(
         title: title,
         theme: theme,
-        darkTheme: DefaultMaterialTheme.dark,
         home: YourHomePage(),
       ),
     );
   }
 }
 ```
+
+* With ThemeProvider, there's no need to set `darkTheme` or `themeMode` anymore.
 
 
 
@@ -44,7 +49,7 @@ ThemeProvider.of(context).next();
 
 ThemeProvider.of(context).previous();
 
-ThemeProvider.of(context).mode = ThemeService.darkMode;
+ThemeProvider.of(context).index = themeIndex;
 ```
 
 
@@ -52,7 +57,7 @@ ThemeProvider.of(context).mode = ThemeService.darkMode;
 ## Create Your Themes
 
 ```dart
-class YourMaterialTheme extends AppTheme<ThemeData> {
+class YourMaterialAppTheme extends MaterialAppTheme {
     final static ThemeData light = ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
@@ -65,9 +70,11 @@ class YourMaterialTheme extends AppTheme<ThemeData> {
         colorSchemeSeed: Colors.purple,
     );
 
+    // other themes...
+
     // Make a list of your themes
     @override
-    List<ThemeData> themeList() => super.from(light, dark, rest: [other themes]);
+    List<ThemeData> themeList() => [light, dark, ];
 }
 ```
 
@@ -82,7 +89,7 @@ class YourApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      themes: DefaultCupertinoTheme(),
+      themes: YorCupertinoAppTheme(),
       builder: (theme) => CupertinoApp(
         title: title,
         theme: theme,
@@ -100,7 +107,7 @@ class YourApp extends StatelessWidget {
 ```dart
 ThemeProvider.of(context).changeNotifier.addListener(() {
   // do your thing, or
-  // persist mode like pref.setX(key, ThemeProvider.of(context).mode)
+  // persist index like pref.setX(key, ThemeProvider.of(context).index)
 });
 ```
 
@@ -124,11 +131,12 @@ Theme.of(context);
 // get current mode?
 ThemeProvider.of(context).mode;
 
-// get current mode name?
-ThemeProvider.of(context).name;
+// get current index?
+ThemeProvider.of(context).index;
 
-// get name of a mode:
-YourAppTheme.nameOf(mode); // e.g. DefaultCupertinoTheme().nameOf(mode)
+// get current theme name?
+// implement `AppTheme.getName` and then:
+ThemeProvider.of(context).name;
 ```
 
 ## Liked Cross Theme Provider?
@@ -140,3 +148,4 @@ Show some love, support by starring the repository, or you can
 
 ## Future
 - Persists selected mode.
+- Downloadable themes.

@@ -9,12 +9,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ThemeProvider(
-      themes: DefaultMaterialTheme(),
+      themes: DefaultMaterialAppTheme(),
       builder: (theme){
         return MaterialApp(
           title: 'Material Test',
           theme: theme,
-          darkTheme: DefaultMaterialTheme.dark,
           home: const MyHomePage(),
         );
       },
@@ -44,14 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: ThemeProvider.of(context).toggle, 
             child: const Text('Change Theme'),
           ),
-          Text(Theme.of(context).brightness.toString()),
+          Text('Brightness: ${Theme.of(context).brightness.toString()}'),
 
           ElevatedButton(
             key: nextModeButtonKey, 
             onPressed: ThemeProvider.of(context).next, 
             child: const Text('Next Mode'),
           ),
-          Text('Mode: ${ThemeProvider.of(context).name}'),
+          Text('Mode: ${ThemeProvider.of(context).mode}'),
 
           ElevatedButton(
             key: systemModeButtonKey, 
@@ -66,5 +65,5 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class ThemeServiceTestClass with ThemeService{
   @override
-  AppTheme get themes => DefaultMaterialTheme();
+  AppTheme get appTheme => DefaultMaterialAppTheme();
 }

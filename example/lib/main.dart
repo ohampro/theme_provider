@@ -11,11 +11,10 @@ class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      themes: DefaultMaterialTheme(),
+      themes: DefaultMaterialAppTheme(),
       builder: (theme) => MaterialApp(
             title: 'Flutter Demo',
             theme: theme,
-            darkTheme: DefaultMaterialTheme.dark,
             home: const MyHomePage(title: 'Flutter Demo Home Page'),
           ),
     );
@@ -82,7 +81,7 @@ Widget buildBody(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('${ThemeProvider.of(context).name} Mode', 
+        Text('${ThemeProvider.of(context).mode} - Theme: ${ThemeProvider.of(context).name}', 
           style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 50,),
