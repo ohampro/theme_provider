@@ -1,3 +1,7 @@
+## 0.2.0
+- Effortless multi-theme management.
+- Update package description.
+
 ## 0.1.0
 - Fix InheritedWidget update issue.
 - Update package description.

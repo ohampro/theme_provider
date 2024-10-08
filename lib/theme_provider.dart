@@ -15,8 +15,16 @@ typedef ThemeProviderBuilder<T> = Widget Function(T theme);
 
 /// This widget provides theme mode by its builder and manages system theme changes.
 class ThemeProvider<T> extends StatefulWidget {
-  /// size of themes
-  final AppTheme<T> themes;
+  /// fixed theme when you have just one theme. for multiple themes use `themes` property.
+  final AppTheme<T>? theme;
+
+  /// list of themes used for `next` and `prev` methods.
+  /// this property will be ignored if you set `theme`, just one of these is expected.
+  final List<AppTheme<T>>? themes;
+
+  /// initial state in format a,b where a is ThemeMode and b is theme index.
+  /// for example 0,0 means system mode and theme index 0.
+  final String? init;
 
   /// Build a widget based on mode argument. (most probably a MaterialApp or CupertinoApp)
   final ThemeProviderBuilder<T> builder;
@@ -24,9 +32,11 @@ class ThemeProvider<T> extends StatefulWidget {
   // ignore: public_member_api_docs
   const ThemeProvider({
     super.key,
-    required this.themes,
+    this.theme,
+    this.themes,
+    this.init,
     required this.builder,
-  });
+  }) : assert(theme != null || themes != null, 'Either theme or themes must be provided');
 
   @override
   State<StatefulWidget> createState() => _ThemeProviderState<T>();
@@ -41,12 +51,21 @@ class ThemeProvider<T> extends StatefulWidget {
 
 class _ThemeProviderState<T> extends State<ThemeProvider<T>>
     with ThemeService, WidgetsBindingObserver {
+  /// fixed theme.
+  @override
+  AppTheme<T>? get fixedTheme => widget.theme;
+
   /// list of available themes.
   @override
-  AppTheme<T> get appTheme => widget.themes;
+  List<AppTheme<T>>? get themes => widget.themes;
+
 
   @override
   void initState() {
+    if (widget.init != null){
+      fromJsonString(widget.init!);
+    }
+
     changeNotifier.addListener(_updateState);
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -57,6 +76,7 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>>
     final app = widget.builder(theme());
 
     return InheritedThemeProvider(
+      mode: mode,
       index: index,
       child: app,
     );

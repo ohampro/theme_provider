@@ -11,7 +11,7 @@ class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      themes: DefaultMaterialAppTheme(),
+      theme: DefaultMaterialAppTheme(),
       builder: (theme) => MaterialApp(
             title: 'Flutter Demo',
             theme: theme,
@@ -81,7 +81,7 @@ Widget buildBody(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('${ThemeProvider.of(context).mode} - Theme: ${ThemeProvider.of(context).name}', 
+        Text('${ThemeProvider.of(context).mode}', 
           style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 50,),

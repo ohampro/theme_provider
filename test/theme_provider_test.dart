@@ -14,7 +14,23 @@ void main() {
       expect(themeService.isSystem, true);
     });
 
-    test('should change mode when requested', (){
+    test('should init with init property', (){
+      themeService.fromJsonString('{"mode":${ThemeMode.light.index},"index":2}');
+
+      expect(themeService.isLight, true);
+      expect(themeService.index, 2);
+    });
+
+    test('should create jsonString properly', (){
+      themeService.light();
+      themeService.index = 2;
+
+      expect(themeService.isLight, true);
+      expect(themeService.index, 2);
+      expect(themeService.jsonString, '{"mode":${ThemeMode.light.index},"index":2}');
+    });
+
+    test('should change the mode when requested', (){
       themeService.dark();
       expect(themeService.isDark, true);
 
@@ -24,11 +40,23 @@ void main() {
       themeService.system();
       expect(themeService.isSystem, true);
     });
+
+    test('should change the index when requested', (){
+      themeService.index = 1;
+      expect(themeService.index, 1);
+
+      // clamps invalid index
+      themeService.index = -1;
+      expect(themeService.index, 0);
+
+      themeService.index = 10;
+      expect(themeService.index, 2); // 2 for ThemeServiceTestClass.themes.length = 3
+    });
   });
 
   group('ThemeProvider', (){
 
-    testWidgets('Widget Should be intuitive and easy to use', (WidgetTester tester) async {
+    testWidgets('Widget Should initiat with light brightness', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(const MyApp()); // intuitive MyApp
 
@@ -46,6 +74,7 @@ void main() {
 
       // Assert
       expect(find.text(kDarkBrightnessString), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.dark}'), findsOneWidget);
 
       // Act 2
       // toogle to light
@@ -54,49 +83,58 @@ void main() {
 
       // Assert
       expect(find.text(kLightBrightnessString), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light}'), findsOneWidget);
     });
 
-    testWidgets('next mode should show light, then dark, then system, then light again', (WidgetTester tester) async {
+    testWidgets('blend of next, prev and mode methods', (WidgetTester tester) async {
       // Arrange
       await tester.pumpWidget(const MyApp());
 
       // Act 1
-      // system to light
+      // from default 0 to 1
       await tester.tap(find.byKey(nextModeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.text(kLightBrightnessString), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.system}'), findsOneWidget);
+      expect(find.text('Index: 1'), findsOneWidget);
 
       // Act 2
-      // light to dark
+      // 1 to 2
       await tester.tap(find.byKey(nextModeButtonKey));
+      // system to dark as default mode is system and system brightness is light
+      await tester.tap(find.byKey(toggleThemeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.text(kDarkBrightnessString), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.dark.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.dark}'), findsOneWidget);
+      expect(find.text('Index: 2'), findsOneWidget);
 
       // Act 3
-      // dark to light again
+      // 2 to 0 because test has 3 themes.
       await tester.tap(find.byKey(nextModeButtonKey));
+      // dark to light
+      await tester.tap(find.byKey(toggleThemeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
       expect(find.text(kLightBrightnessString), findsOneWidget);
-      expect(find.text('Mode: ${ThemeMode.light.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light}'), findsOneWidget);
+      expect(find.text('Index: 0'), findsOneWidget);
 
-      // Act 4
-      // light to system
-      await tester.tap(find.byKey(systemModeButtonKey));
+      // Act 4 - previous
+      // 0 to 2 because test has 3 themes.
+      await tester.tap(find.byKey(prevModeButtonKey));
       await tester.pumpAndSettle();
 
       // Assert
-      expect(find.text('Mode: ${ThemeMode.system.toString()}'), findsOneWidget);
+      expect(find.text('Mode: ${ThemeMode.light}'), findsOneWidget);
+      expect(find.text('Index: 2'), findsOneWidget);
     });
   });
 }
 
-String get kLightBrightnessString => 'Brightness: ${Brightness.light.toString()}';
-String get kDarkBrightnessString => 'Brightness: ${Brightness.dark.toString()}';
+String get kLightBrightnessString => 'Brightness: ${Brightness.light}';
+String get kDarkBrightnessString => 'Brightness: ${Brightness.dark}';

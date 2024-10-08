@@ -1,19 +1,12 @@
-import 'package:flutter/material.dart';
 
 /// Helper class for selecting theme based on mode.
 abstract class AppTheme<T> {
   /// Make a list of themes
-  List<T> themeList();
+  AppTheme(T light, T dark) : lightTheme = (() => light), darkTheme = (() => dark);
 
   /// return light theme if available
-  T get lightTheme;
+  final T Function() lightTheme;
 
   /// return dark theme if available
-  T get darkTheme;
-
-  /// Return `Brightness` of your theme data class.
-  Brightness? getBrightness(T themeObject);
-
-  /// Return a name for theme
-  String getName(T themeObject) => themeList().indexOf(themeObject).toString();
+  final T Function() darkTheme;
 }

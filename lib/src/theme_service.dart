@@ -1,71 +1,91 @@
+import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/material.dart'
     show Brightness, ThemeMode, ValueNotifier, WidgetsBinding;
 import 'package:x_theme_provider/src/app_theme.dart';
 
 /// ThemeService provides methods for managing and changing themes and mode.
 mixin ThemeService {
-  static const int _systemMode = -1;
-
-  /// Use it to listen to the changes.
-  final ValueNotifier<int> changeNotifier = ValueNotifier(_systemMode);
+    /// current theme.
+  AppTheme? get fixedTheme;
 
   /// list of available themes.
-  AppTheme get appTheme;
+  List<AppTheme>? get themes;
 
-  /// list of the available themes in AppTheme, or defaultTheme if themeList is empty.
-  List get themes => appTheme.themeList().isNotEmpty
-      ? appTheme.themeList()
-      : [appTheme.lightTheme, appTheme.darkTheme];
+  /// Use it to listen to the changes.
+  final ValueNotifier<String> changeNotifier = ValueNotifier('');
 
-  int _index = _systemMode;
+  ThemeMode _mode = ThemeMode.system;
 
-  /// current theme index
+  /// current mode
+  ThemeMode get mode => _mode;
+
+  set mode(ThemeMode value) {
+    _mode = value;
+    changeNotifier.value = 'mode:$value';
+  }
+
+  int _index = 0;
+
+  /// current theme index, it has no effect if `theme` property is set.
   int get index => _index;
 
+  /// theme index in `themes` list.
+  /// it does nothing if `themes` is empty or `theme` property is set.
+  /// it also clamps the value between 0 and themes.length.
   set index(int value) {
-    _index = value.clamp(_systemMode, max(0, themes.length - 1));
-    changeNotifier.value = _index;
+    if (themes == null || themes!.isEmpty){
+      return;
+    }
+
+    _index = value.clamp(0, max(0, themes!.length - 1));
+    changeNotifier.value = 'index:$_index';
   }
 
   /// set theme to the next item.
-  void next() => index = (index + 1) % themes.length;
+  void next() {
+    if (themes == null || themes!.isEmpty){
+      return;
+    }
+
+    index = (index + 1) % themes!.length;
+  }
 
   /// set theme to the previous item.
-  void previous() => index = (index - 1) % themes.length;
+  void previous() {
+    if (themes == null || themes!.isEmpty){
+      return;
+    }
 
-  /// set to `systemMode`, it means no theme is selected by user and theme `index` is -1
-  void system() => index = _systemMode;
+    index = (index - 1) % themes!.length;
+  }
 
   /// get current theme based on the `index`
   T theme<T>() {
-    int tIndex = _index;
-    List list = themes;
+    late AppTheme appTheme;
 
-    if (isSystem) {
-      if (ThemeService.isDarkSystem) {
-        if (appTheme.darkTheme != null) {
-          return appTheme.darkTheme;
-        }
+    if (fixedTheme != null){
+      appTheme = fixedTheme!;
 
-        tIndex = _indexOfBrightness(Brightness.dark);
-      } else {
-        if (appTheme.lightTheme != null) {
-          return appTheme.lightTheme;
-        }
+    }else if (themes != null && themes!.isNotEmpty){
+      appTheme = themes![index];
 
-        tIndex = _indexOfBrightness(Brightness.light);
-      }
+    }else{
+      throw ArgumentError('Either theme or themes must be provided');
     }
 
-    tIndex = tIndex.clamp(0, max(0, list.length - 1));
+    ThemeMode finalMode = mode;
 
-    return list[tIndex];
+    if (isSystem) {
+      finalMode = ThemeService.isDarkSystem ? ThemeMode.dark : ThemeMode.light;
+    }
+
+    if (finalMode == ThemeMode.dark) {
+      return appTheme.darkTheme();
+    } else {
+      return appTheme.lightTheme();
+    }
   }
-
-  /// checks if current mode is `systemMode`
-  bool get isSystem => index <= _systemMode;
 
   /// check if system is dark mode,
   /// system can be dark mode while your app is using a light theme,
@@ -76,13 +96,7 @@ mixin ThemeService {
     return brightness == Brightness.dark;
   }
 
-  // return theme index of reuested brightness if available, or -1
-  int _indexOfBrightness(Brightness brightness) =>
-      themes.indexWhere((test) => appTheme.getBrightness(test) == brightness);
-
   /// toggle mode between light and dark theme.
-  /// if these are defined using `AppTheme.darkTheme` and `AppTheme.lightTheme` cool. if not
-  /// the first light and first dark theme in the `themeList` will be used.
   void toggle() {
     if (!isDark) {
       dark();
@@ -91,64 +105,47 @@ mixin ThemeService {
     }
   }
 
-  /// find light theme and set it.
-  /// it first looks for `AppTheme.lightTheme` if is set and present in the `AppTheme.ThemeList`, if not
-  /// then searches in `ThemeList` for first theme with `Brightness.light`. if nothing found then it does nothing.
-  void light() => _tryMode(appTheme.lightTheme, Brightness.light);
+  /// set mode to `ThemeMode.system`
+  void system() => mode = ThemeMode.system;
 
-  /// find dark theme and set it.
-  /// it first looks for `AppTheme.darkTheme` if is set and present in the `AppTheme.ThemeList`, if not
-  /// then searches in `ThemeList` for first theme with `Brightness.dark`. if nothing found then it does nothing.
-  void dark() => _tryMode(appTheme.darkTheme, Brightness.dark);
+  /// set mode to `ThemeMode.light`
+  void light() => mode = ThemeMode.light;
 
-  void _tryMode(dynamic mTheme, Brightness defaultBrightness) {
-    int mIndex = _indexOfTheme(mTheme);
+  /// set mode to `ThemeMode.dark`
+  void dark() => mode = ThemeMode.dark;
 
-    if (mIndex == -1) {
-      mIndex = _indexOfBrightness(defaultBrightness);
-    }
 
-    if (mIndex > -1) {
-      index = mIndex;
-    }
+  /// checks if current mode is `systemMode`
+  bool get isSystem => mode == ThemeMode.system;
+
+  /// checks if current mode is light
+  bool get isLight => mode == ThemeMode.light;
+
+  /// checks if current mode is dark
+  bool get isDark => mode == ThemeMode.dark;
+
+
+  /// returns json string for persisting purpose.
+  String get jsonString {
+    final jsonMap = {
+      'mode': _mode.index,
+      'index': _index,
+    };
+
+    return json.encode(jsonMap);
   }
 
-  // return index of reuested theme if available, or -1
-  int _indexOfTheme(dynamic defaultTheme) =>
-      themes.indexWhere((test) => test == defaultTheme);
-
-  /// checks if current theme is light
-  bool get isLight => !isDark;
-
-  /// checks if current theme is dark
-  bool get isDark {
-    final list = themes;
-
-    if (list.isNotEmpty && index > _systemMode && index < list.length) {
-      final brightness = appTheme.getBrightness(list[index]);
-
-      if (brightness == Brightness.dark) {
-        return true;
-      } else if (brightness == Brightness.light) {
-        return false;
-      }
-    }
-
-    return isDarkSystem;
+  /// set state from a valid jsonString.
+  /// this method is better to be called before `changeNotifier.addListener`.
+  void fromJsonString(String string){
+    Map<String, dynamic> jsonMap = json.decode(string);
+    _mode = _toThemeMode(jsonMap['mode']);
+    index = jsonMap['index'];
   }
 
-  /// return the name of current theme if implemented using `AppTheme.getName`
-  String get name => appTheme.getName(theme());
-
-  /// return the current ThemeMode
-  ThemeMode get mode => modeOf(_index);
-
-  /// Returns the ThemeMode of a theme by index.
-  ThemeMode modeOf(int index) => isSystem
-      ? ThemeMode.system
-      : appTheme.getBrightness(themes[index]) == Brightness.light
-          ? ThemeMode.light
-          : appTheme.getBrightness(themes[index]) == Brightness.dark
-              ? ThemeMode.dark
-              : ThemeMode.system;
+  ThemeMode _toThemeMode(int value) => value == ThemeMode.light.index
+    ? ThemeMode.light
+      : value == ThemeMode.dark.index
+        ? ThemeMode.dark 
+        : ThemeMode.system ;
 }

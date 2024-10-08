@@ -1,6 +1,6 @@
 name: x_theme_provider
-description: Simplest Theme package, light, dark, and system modes. Custom and pre made themes. Seamlessly integrates with MaterialApp and CupertinoApp.
-version: 0.1.0
+description: Effortless theme package with light, dark, and system modes. Customizable theme data, seamlessly integrated with MaterialApp and CupertinoApp.
+version: 0.2.0
 homepage: https://ohampro.github.io/theme_provider/
 repository: https://github.com/ohampro/theme_provider
 license: MIT

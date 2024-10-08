@@ -9,7 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ThemeProvider(
-      themes: DefaultMaterialAppTheme(),
+      theme: DefaultMaterialAppTheme(),
+      themes: [DefaultMaterialAppTheme(), DefaultMaterialAppTheme(), DefaultMaterialAppTheme()],
+      init: '{"mode":0,"index":0}',
       builder: (theme){
         return MaterialApp(
           title: 'Material Test',
@@ -30,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 
 const toggleThemeButtonKey = ValueKey('changeThemeButtonKey');
 const nextModeButtonKey = ValueKey('nextModeButtonKey');
+const prevModeButtonKey = ValueKey('prevModeButtonKey');
 const systemModeButtonKey = ValueKey('systemModeButtonKey');
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -43,14 +46,21 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: ThemeProvider.of(context).toggle, 
             child: const Text('Change Theme'),
           ),
-          Text('Brightness: ${Theme.of(context).brightness.toString()}'),
+          Text('Brightness: ${Theme.of(context).brightness}'),
 
+          ElevatedButton(
+            key: prevModeButtonKey, 
+            onPressed: ThemeProvider.of(context).previous, 
+            child: const Text('Prev. Mode'),
+          ),
           ElevatedButton(
             key: nextModeButtonKey, 
             onPressed: ThemeProvider.of(context).next, 
             child: const Text('Next Mode'),
           ),
           Text('Mode: ${ThemeProvider.of(context).mode}'),
+
+          Text('Index: ${ThemeProvider.of(context).index}'),
 
           ElevatedButton(
             key: systemModeButtonKey, 
@@ -63,7 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class ThemeServiceTestClass with ThemeService{
+class ThemeServiceTestClass with ThemeService{  
   @override
-  AppTheme get appTheme => DefaultMaterialAppTheme();
+  AppTheme? get fixedTheme => DefaultMaterialAppTheme();
+  
+  @override
+  List<AppTheme>? get themes => [DefaultMaterialAppTheme(), DefaultMaterialAppTheme(), DefaultMaterialAppTheme()];
 }

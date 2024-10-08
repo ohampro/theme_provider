@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:x_theme_provider/src/material_app_theme.dart';
+import 'package:x_theme_provider/theme_provider.dart';
 
 /// This class provides a basic theme for test purpose.
-class DefaultMaterialAppTheme extends MaterialAppTheme {
+class DefaultMaterialAppTheme extends AppTheme<ThemeData> {
+  // ignore: public_member_api_docs
+  DefaultMaterialAppTheme() : super(light, dark);
+
   // ignore: public_member_api_docs
   static final ThemeData light = ThemeData(
     brightness: Brightness.light,
@@ -16,11 +19,4 @@ class DefaultMaterialAppTheme extends MaterialAppTheme {
     //colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
     useMaterial3: true,
   );
-
-  /// Make a list of themes
-  @override
-  List<ThemeData> themeList() => [
-        light,
-        dark,
-      ];
 }

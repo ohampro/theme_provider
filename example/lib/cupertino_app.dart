@@ -9,7 +9,7 @@ class MyCupertinoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      themes: DefaultCupertinoAppTheme(),
+      theme: DefaultCupertinoAppTheme(),
       builder: (theme) => CupertinoApp(
             theme: theme,
             home: const MyCupertinoHomePage(title: 'Flutter Demo Home Page'),
