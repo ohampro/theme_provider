@@ -6,13 +6,16 @@ import 'package:flutter/widgets.dart';
 class InheritedThemeProvider extends InheritedWidget {
   /// current mode
   final ThemeMode mode;
-  
+
   /// current theme index
   final int index;
 
   // ignore: public_member_api_docs
   const InheritedThemeProvider(
-      {super.key, required this.mode, required this.index, required super.child});
+      {super.key,
+      required this.mode,
+      required this.index,
+      required super.child});
 
   /// Allows access to current mode.
   static InheritedThemeProvider? of(BuildContext context) {

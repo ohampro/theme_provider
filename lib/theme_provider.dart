@@ -36,7 +36,8 @@ class ThemeProvider<T> extends StatefulWidget {
     this.themes,
     this.init,
     required this.builder,
-  }) : assert(theme != null || themes != null, 'Either theme or themes must be provided');
+  }) : assert(theme != null || themes != null,
+            'Either theme or themes must be provided');
 
   @override
   State<StatefulWidget> createState() => _ThemeProviderState<T>();
@@ -59,10 +60,9 @@ class _ThemeProviderState<T> extends State<ThemeProvider<T>>
   @override
   List<AppTheme<T>>? get themes => widget.themes;
 
-
   @override
   void initState() {
-    if (widget.init != null){
+    if (widget.init != null) {
       fromJsonString(widget.init!);
     }
 

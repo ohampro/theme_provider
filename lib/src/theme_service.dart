@@ -6,7 +6,7 @@ import 'package:x_theme_provider/src/app_theme.dart';
 
 /// ThemeService provides methods for managing and changing themes and mode.
 mixin ThemeService {
-    /// current theme.
+  /// current theme.
   AppTheme? get fixedTheme;
 
   /// list of available themes.
@@ -34,7 +34,7 @@ mixin ThemeService {
   /// it does nothing if `themes` is empty or `theme` property is set.
   /// it also clamps the value between 0 and themes.length.
   set index(int value) {
-    if (themes == null || themes!.isEmpty){
+    if (themes == null || themes!.isEmpty) {
       return;
     }
 
@@ -44,7 +44,7 @@ mixin ThemeService {
 
   /// set theme to the next item.
   void next() {
-    if (themes == null || themes!.isEmpty){
+    if (themes == null || themes!.isEmpty) {
       return;
     }
 
@@ -53,7 +53,7 @@ mixin ThemeService {
 
   /// set theme to the previous item.
   void previous() {
-    if (themes == null || themes!.isEmpty){
+    if (themes == null || themes!.isEmpty) {
       return;
     }
 
@@ -64,13 +64,11 @@ mixin ThemeService {
   T theme<T>() {
     late AppTheme appTheme;
 
-    if (fixedTheme != null){
+    if (fixedTheme != null) {
       appTheme = fixedTheme!;
-
-    }else if (themes != null && themes!.isNotEmpty){
+    } else if (themes != null && themes!.isNotEmpty) {
       appTheme = themes![index];
-
-    }else{
+    } else {
       throw ArgumentError('Either theme or themes must be provided');
     }
 
@@ -114,7 +112,6 @@ mixin ThemeService {
   /// set mode to `ThemeMode.dark`
   void dark() => mode = ThemeMode.dark;
 
-
   /// checks if current mode is `systemMode`
   bool get isSystem => mode == ThemeMode.system;
 
@@ -123,7 +120,6 @@ mixin ThemeService {
 
   /// checks if current mode is dark
   bool get isDark => mode == ThemeMode.dark;
-
 
   /// returns json string for persisting purpose.
   String get jsonString {
@@ -137,15 +133,15 @@ mixin ThemeService {
 
   /// set state from a valid jsonString.
   /// this method is better to be called before `changeNotifier.addListener`.
-  void fromJsonString(String string){
+  void fromJsonString(String string) {
     Map<String, dynamic> jsonMap = json.decode(string);
     _mode = _toThemeMode(jsonMap['mode']);
     index = jsonMap['index'];
   }
 
   ThemeMode _toThemeMode(int value) => value == ThemeMode.light.index
-    ? ThemeMode.light
+      ? ThemeMode.light
       : value == ThemeMode.dark.index
-        ? ThemeMode.dark 
-        : ThemeMode.system ;
+          ? ThemeMode.dark
+          : ThemeMode.system;
 }
