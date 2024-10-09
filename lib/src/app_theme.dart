@@ -9,4 +9,7 @@ abstract class AppTheme<T> {
 
   /// return dark theme if available
   final T Function() darkTheme;
+
+  /// name of theme.
+  String get name => 'Default';
 }
