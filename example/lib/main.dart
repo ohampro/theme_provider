@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:example/cupertino_app.dart';
+import 'package:example/src/cupertino_app.dart';
 import 'package:x_theme_provider/theme_provider.dart';
+import 'package:example/src/my_material_themes.dart';
 
 
 void main() => runApp(const MyMaterialApp());
@@ -11,11 +12,11 @@ class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      theme: DefaultMaterialAppTheme(),
+      themes: themes,
       builder: (theme) => MaterialApp(
             title: 'Flutter Demo',
             theme: theme,
-            home: const MyHomePage(title: 'Flutter Demo Home Page'),
+            home: const MyHomePage(title: 'Flutter Material Demo'),
           ),
     );
   }
@@ -36,9 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text('${widget.title} - ${ThemeProvider.of(context).mode}'),
       ),
-      body: buildBody(context, _buildButton, _buildAppSwitch),   
+      body: buildBody(context, _buildButton, _buildAppSwitch, themes),   
       floatingActionButton: FloatingActionButton(
         onPressed: ThemeProvider.of(context).toggle,
         tooltip: 'toggle',
@@ -76,22 +77,36 @@ Widget buildBody(
   BuildContext context, 
   BtnBuilder btnBuilder, 
   Function(BuildContext context, BtnBuilder builder) buildAppSwitch, 
+  List<AppTheme> themes
 ) {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text('${ThemeProvider.of(context).mode}', 
-          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 40.0),
+    child: SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Wrap(
+                  alignment: WrapAlignment.center,
+                  children: buildFeatures(context, btnBuilder),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildAppSwitch(context, btnBuilder),
+                ],
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: buildThemes(context, btnBuilder, themes),
+            ),
+          ],
         ),
-        const SizedBox(height: 50,),
-        Wrap(
-          alignment: WrapAlignment.center,
-          children: buildFeatures(context, btnBuilder),
-        ),
-        const SizedBox(height: 50,),
-        buildAppSwitch(context, btnBuilder),
-      ]
+      ),
     ),
   );
 }
@@ -104,7 +119,29 @@ List<Widget> buildFeatures(BuildContext context, BtnBuilder btnBuilder){
     btnBuilder(service.dark, Icons.dark_mode, 'dark'),
     btnBuilder(service.system, Icons.settings, 'system'),
     btnBuilder(service.toggle, service.isDark ? Icons.toggle_off : Icons.toggle_on, 'toggle'),
-    btnBuilder(service.previous, Icons.skip_previous, 'previous'),
-    btnBuilder(service.next, Icons.skip_next, 'next'),
+  ];
+}
+
+List<Widget> buildThemes(BuildContext context, BtnBuilder btnBuilder, List<AppTheme> themes){
+  final ThemeService service = ThemeProvider.of(context);
+
+  return [
+    Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        btnBuilder(service.previous, Icons.skip_previous, 'previous'),
+        btnBuilder(service.next, Icons.skip_next, 'next'),  
+      ],
+    ),
+    const SizedBox(height: 50,),
+    Column(
+      children: themes.map((theme) => btnBuilder(
+      () => ThemeProvider.of(context).index = themes.indexOf(theme),
+      (themes.indexOf(theme) == ThemeProvider.of(context).index)
+        ? Icons.keyboard_double_arrow_right
+        : Icons.keyboard_arrow_right_outlined,
+      'Theme ${themes.indexOf(theme)} - ${theme.name}',
+    )).toList(),
+    ),
   ];
 }

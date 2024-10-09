@@ -1,6 +1,8 @@
 ## 0.2.0
 - Effortless multi-theme management.
 - Update package description.
+- Add theme name support.
+- Update example app to present multi-theme.
 
 ## 0.1.0
 - Fix InheritedWidget update issue.

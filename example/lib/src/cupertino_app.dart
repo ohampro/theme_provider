@@ -1,7 +1,8 @@
-import 'package:example/main.dart';
+import 'package:example/main.dart' show buildBody, BtnBuilder, MyMaterialApp;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:x_theme_provider/theme_provider.dart';
+import 'package:example/src/my_cupertino_themes.dart';
 
 class MyCupertinoApp extends StatelessWidget {
   const MyCupertinoApp({super.key});
@@ -9,10 +10,10 @@ class MyCupertinoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      theme: DefaultCupertinoAppTheme(),
+      themes: themes,
       builder: (theme) => CupertinoApp(
             theme: theme,
-            home: const MyCupertinoHomePage(title: 'Flutter Demo Home Page'),
+            home: const MyCupertinoHomePage(title: 'Cupertino Cupertino Demo'),
           ),
     );
   }
@@ -33,24 +34,21 @@ class _MyCupertinoHomePageState extends State<MyCupertinoHomePage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text('Cupertino Theme'),
+        middle: Text('${widget.title} - ${ThemeProvider.of(context).mode}'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      child: buildBody(context, _buildButton, _buildAppSwitch),
+      child: buildBody(context, _buildButton, _buildAppSwitch, themes),
     );
   }
 
   Widget _buildButton(VoidCallback? onPressed, IconData icon, String label){
     return SizedBox(
-      width: 150,
       child: CupertinoButton(
         onPressed: onPressed, 
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(icon),
-            ),
+            Icon(icon),
             Text(label),
           ],
         ), 
