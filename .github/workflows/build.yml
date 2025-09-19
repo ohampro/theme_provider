@@ -22,10 +22,12 @@ jobs:
     # Install dependencies
     - name: Install dependencies
       run: flutter pub get
+      working-directory: example
 
     # Build the web app
     - name: Build Flutter Web
       run: flutter build web --release --base-href /theme_provider/
+      working-directory: example
       
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v5
